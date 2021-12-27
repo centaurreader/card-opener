@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Opener</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Modak&family=Raleway:wght@900&display=swap" rel="stylesheet">
+
+    <style>
+        body, html { height: 100%; }
+        body {
+            background-image: url('https://media.istockphoto.com/photos/green-felt-seamless-texture-picture-id1020149446?k=20&m=1020149446&s=170667a&w=0&h=t4CekXwUKHthCmXDbEA8G7AdPNaFoIXk44LMEiAX-90=');
+        }
+        h1 {
+            text-align: center;
+            font-family: 'Raleway', sans-serif;
+            font-size: 6rem;
+            color: #fff;
+            text-shadow: 0px 0px 17px #00ffac;
+        }
+        .card_container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-top: 4rem;
+        }
+        .card {
+            border-radius: 24px;
+            box-shadow: 0 2px 12px 4px rgb(0 255 0 / 25%),
+                0 2px 2px 0px rgb(0 255 0 / 5%);
+            height: 450px;
+            width: 325px;
+            transition: transform .125s;
+            transform-origin: 50% 50%;
+            transform: perspective(9cm) rotateY(30deg) translateX(15%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-image: url('https://m.media-amazon.com/images/I/51zLZbEVSTL._AC_SX466_.jpg');
+            background-size: 25px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+        .card--flipped {
+            transform: rotateY(180deg);
+        }
+        .card p {
+            font-size: 3rem;
+            color: rgb(20, 200, 200);
+            text-shadow: 0 2px rgb(70, 70, 185);
+            transform: rotate(-24deg);
+            font-family: 'Modak', cursive;
+        }
+        .card_back {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background-color: white;
+            opacity: 0;
+            transform: rotateY(-180deg);
+            transition: opacity .125s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            color: rgb(20, 200, 200);
+            text-shadow: 0 2px rgb(70, 70, 185);
+            font-family: 'Modak', cursive;
+            background: linear-gradient(#ffbaba, #b6b6f5);
+        }
+
+        .container {
+            margin: 0 auto;
+            max-width: 335px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        .head {
+            position: relative;
+            background: salmon;
+            height: 80px;
+            width: 70px;
+            border-radius: 400px;
+        }
+        .eye {
+            position: absolute;
+            background: teal;
+            top: 25%;
+            height: 20px;
+            width: 25px;
+            border-radius: 200px;
+        }
+        .eye::after {
+            content: ' ';
+            background: white;
+            height: 4px;
+            width: 4px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%);
+            border-radius: 4px;
+        }
+        .eye + .eye { right: 0 }
+        .mouth {
+            height: 4px;
+            width: 35px;
+            background: lime;
+            position: absolute;
+            top: 65%;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .neck {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background: salmon;
+            top: 80px;
+            width: 10px;
+            height: 10px;
+        }
+        .body {
+            top: 90px;
+            height: 20px;
+            width: 100px;
+            background: gray;
+            position: absolute;
+            border-top-right-radius: 8px;
+            border-top-left-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+   <h1>Click to open.</h1>
+   <div class="card_container">
+       <button class="card">
+            <p>Cool Card</p>
+            <div class="card_back">
+                <div class="container">
+                    <div class="head">
+                        <div class="eye"></div>
+                        <div class="eye"></div>
+                        <div class="mouth"></div>
+                    </div>
+                    <div class="neck"></div>
+                    <div class="body"></div>
+                </div>
+                <p id="char_name">Cool man</p>
+            </div>
+       </button>
+   </div>
+
+   <script>
+       const {
+           scrollWidth: bodyWidth,
+       } = document.body;
+       const card = document.querySelector('.card');
+       document.body.addEventListener('mousemove', (event) => {
+            if (card.classList.contains('card--flipped')) {
+               return;
+            }
+            const { clientX: mouseLeft } = event;
+            const percentLeft = mouseLeft / bodyWidth;
+            const style = {
+                perspective: 9,
+                rotateY: (percentLeft * 30) - 15,
+                translateX: 15,
+                scaleX: (percentLeft * .05) + .45,
+            };
+            card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
+       });
+       document.body.addEventListener('click', () => {
+            card.setAttribute('style', '');
+            if (card.classList.contains('card--flipped')) {
+                card.classList.remove('card--flipped');
+                const cardBack = document.querySelector('.card_back');
+                cardBack.setAttribute('style', 'opacity: 0');
+            } else {
+                card.classList.add('card--flipped');
+                const cardBack = document.querySelector('.card_back');
+                cardBack.setAttribute('style', 'opacity: 1');
+            }
+
+            // generate cool man
+            const skinRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+            const eyeRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+            const mouthRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+            const shirtRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+            const head = document.querySelector('.head');
+            head.setAttribute('style', `background: ${skinRgb}`);
+            const neck = document.querySelector('.neck');
+            neck.setAttribute('style', `background: ${skinRgb}`);
+            const shirt = document.querySelector('.body');
+            shirt.setAttribute('style', `background: ${shirtRgb}`);
+            const eyes = document.querySelectorAll('.eyes');
+            eyes.forEach((eye) => {
+                eye.setAttribute('style', `background: ${eyeRgb}`);
+            });
+            const mouth = document.querySelector('.mouth');
+            mouth.setAttribute('style', `background: ${mouthRgb}`);
+
+            const firstName = ['Cool', 'Uncool', 'Nasty', 'Nice', 'Mean', 'Sallow', 'Corn'];
+            const lastName = ['Man', 'Woman', 'Person', 'Alien', 'Bug', 'Dman'];
+            const label = document.getElementById('char_name');
+            const fnIndex = Math.ceil(Math.random() * firstName.length - 1);
+            const lnIndex = Math.ceil(Math.random() * lastName.length - 1);
+            console.log({ fnIndex, lnIndex });
+            label.innerText = `${firstName[fnIndex]} ${lastName[lnIndex]}`;
+       });
+   </script>
+</body>
+</html>

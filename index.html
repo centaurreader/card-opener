@@ -205,16 +205,22 @@
             if (card.classList.contains('card--flipped')) {
                 card.classList.remove('card--flipped');
                 const cardBack = document.querySelector('.card_back');
-                cardBack.setAttribute('style', 'opacity: 0');
+                cardBack.setAttribute('style', 'opacity: 0;');
             } else {
                 card.classList.add('card--flipped');
                 const cardBack = document.querySelector('.card_back');
-                cardBack.setAttribute('style', 'opacity: 1');
+                cardBack.setAttribute('style', 'opacity: 1;');
 
-                const skinRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+                const skinR = Math.floor(Math.random() * 256);
+                const skinG = Math.floor(Math.random() * 256);
+                const skinB = Math.floor(Math.random() * 256);
+                const skinRgb = `rgba(${skinR}, ${skinG}, ${skinB}, 1)`;
                 const eyeRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
                 const mouthRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
-                const shirtRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+                const shirtR = Math.floor(Math.random() * 256);
+                const shirtG = Math.floor(Math.random() * 256);
+                const shirtB = Math.floor(Math.random() * 256);
+                const shirtRgb = `rgba(${shirtR}, ${shirtG}, ${shirtB}, 1)`;
                 const head = document.querySelector('.head');
                 head.setAttribute('style', `background: ${skinRgb}`);
                 const neck = document.querySelector('.neck');
@@ -234,6 +240,9 @@
                 const fnIndex = Math.ceil(Math.random() * firstName.length - 1);
                 const lnIndex = Math.ceil(Math.random() * lastName.length - 1);
                 label.innerText = `${firstName[fnIndex]} ${lastName[lnIndex]}`;
+
+                const back = document.querySelector('.card_back');
+                back.setAttribute('style', `${back.getAttribute('style')} background: linear-gradient(rgba(${skinB}, ${skinR}, ${skinG}, 1), rgba(${shirtB}, ${shirtR}, ${shirtG}, 1)`);
             }
        });
    </script>

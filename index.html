@@ -172,27 +172,29 @@
        } = document.body;
        const card = document.querySelector('.card');
        window.addEventListener("deviceorientation", (event) => {
-        if (card.classList.contains('card--flipped')) {
-               return;
+           let flipOffset = 0;
+            if (card.classList.contains('card--flipped')) {
+                flipOffset = 180;
             }
             const percentLeft = event.gamma / 100;
             const style = {
                 perspective: 9,
-                rotateY: (percentLeft * 100),
+                rotateY: (percentLeft * 100) + flipOffset,
                 translateX: 15,
                 scaleX: (percentLeft * .05) + .45,
             };
             card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
        }, true);
        document.body.addEventListener('mousemove', (event) => {
+            let flipOffset = 0;
             if (card.classList.contains('card--flipped')) {
-               return;
+                flipOffset = 180;
             }
             const { clientX: mouseLeft } = event;
             const percentLeft = mouseLeft / bodyWidth;
             const style = {
                 perspective: 9,
-                rotateY: (percentLeft * 30) - 15,
+                rotateY: (percentLeft * 30) - 15 + flipOffset,
                 translateX: 15,
                 scaleX: (percentLeft * .05) + .45,
             };

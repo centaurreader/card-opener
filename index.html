@@ -147,7 +147,7 @@
     </style>
 </head>
 <body>
-   <h1>Click to open.</h1>
+   <h1>Tap to open.</h1>
    <div class="card_container">
        <button class="card">
             <p>Cool Card</p>
@@ -201,12 +201,15 @@
             card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
        });
        document.body.addEventListener('click', () => {
+           const title = document.querySelector('h1');
             card.setAttribute('style', '');
             if (card.classList.contains('card--flipped')) {
                 card.classList.remove('card--flipped');
                 const cardBack = document.querySelector('.card_back');
                 cardBack.setAttribute('style', 'opacity: 0;');
+                title.innerText = 'Tap to open.';
             } else {
+                title.innerText = 'Wow, Cool Card™!';
                 card.classList.add('card--flipped');
                 const cardBack = document.querySelector('.card_back');
                 cardBack.setAttribute('style', 'opacity: 1;');

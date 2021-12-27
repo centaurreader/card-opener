@@ -190,33 +190,32 @@
                 card.classList.add('card--flipped');
                 const cardBack = document.querySelector('.card_back');
                 cardBack.setAttribute('style', 'opacity: 1');
+
+                const skinRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+                const eyeRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+                const mouthRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+                const shirtRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
+                const head = document.querySelector('.head');
+                head.setAttribute('style', `background: ${skinRgb}`);
+                const neck = document.querySelector('.neck');
+                neck.setAttribute('style', `background: ${skinRgb}`);
+                const shirt = document.querySelector('.body');
+                shirt.setAttribute('style', `background: ${shirtRgb}`);
+                const eyes = document.querySelectorAll('.eyes');
+                eyes.forEach((eye) => {
+                    eye.setAttribute('style', `background: ${eyeRgb}`);
+                });
+                const mouth = document.querySelector('.mouth');
+                mouth.setAttribute('style', `background: ${mouthRgb}`);
+
+                const firstName = ['Cool', 'Uncool', 'Nasty', 'Nice', 'Mean', 'Sallow', 'Corn'];
+                const lastName = ['Man', 'Woman', 'Person', 'Alien', 'Bug', 'Dman'];
+                const label = document.getElementById('char_name');
+                const fnIndex = Math.ceil(Math.random() * firstName.length - 1);
+                const lnIndex = Math.ceil(Math.random() * lastName.length - 1);
+                console.log({ fnIndex, lnIndex });
+                label.innerText = `${firstName[fnIndex]} ${lastName[lnIndex]}`;
             }
-
-            // generate cool man
-            const skinRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
-            const eyeRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
-            const mouthRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
-            const shirtRgb = `rgba(${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, ${Math.floor(Math.random() * 256)}, 1)`;
-            const head = document.querySelector('.head');
-            head.setAttribute('style', `background: ${skinRgb}`);
-            const neck = document.querySelector('.neck');
-            neck.setAttribute('style', `background: ${skinRgb}`);
-            const shirt = document.querySelector('.body');
-            shirt.setAttribute('style', `background: ${shirtRgb}`);
-            const eyes = document.querySelectorAll('.eyes');
-            eyes.forEach((eye) => {
-                eye.setAttribute('style', `background: ${eyeRgb}`);
-            });
-            const mouth = document.querySelector('.mouth');
-            mouth.setAttribute('style', `background: ${mouthRgb}`);
-
-            const firstName = ['Cool', 'Uncool', 'Nasty', 'Nice', 'Mean', 'Sallow', 'Corn'];
-            const lastName = ['Man', 'Woman', 'Person', 'Alien', 'Bug', 'Dman'];
-            const label = document.getElementById('char_name');
-            const fnIndex = Math.ceil(Math.random() * firstName.length - 1);
-            const lnIndex = Math.ceil(Math.random() * lastName.length - 1);
-            console.log({ fnIndex, lnIndex });
-            label.innerText = `${firstName[fnIndex]} ${lastName[lnIndex]}`;
        });
    </script>
 </body>

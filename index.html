@@ -172,6 +172,15 @@
         .audio_player label {
             margin-left: 1rem;
         }
+
+        #remaining_cards {
+            text-align: center;
+            font-family: 'Raleway', sans-serif;
+            font-size: 1rem;
+            margin-top: 4rem;
+            color: #fff;
+            text-shadow: 0px 0px 17px #00ffac;
+        }
     </style>
 </head>
 <body>
@@ -193,6 +202,9 @@
             </div>
         </button>
     </div>
+
+    <p id="remaining_cards"></p>
+
     <audio id="reveal_sound" src="reveal-adjusted.wav">
         Your browser does not support the <code>audio</code> element.
     </audio>
@@ -210,6 +222,29 @@
     </section>
     
     <script>
+        const count = document.getElementById('remaining_cards');
+        const storageKey = 'crco';
+        const getStoredData = () => {
+            try {
+                return JSON.parse(localStorage.getItem(storageKey)) || {};
+            } catch (err) {
+                return {};
+            }
+        }
+        const setStoredData = (data) => {
+            localStorage.setItem(storageKey, JSON.stringify(data));
+        }
+        const initStore = () => {
+            const data = getStoredData();
+            const day = new Date().getDay();
+            if (!data.day || data.day !== day) {
+                setStoredData({ day, count: 0 });
+            }
+            const newData = getStoredData();
+            count.innerText = `Remaining: ${5 - newData.count}`;
+        }
+        initStore();
+
         const audioControl = document.getElementById('audio_control');
         const audio = document.querySelector('#loop_sound');
         audio.volume = .5;
@@ -271,6 +306,15 @@
                 cardBack.setAttribute('style', 'opacity: 0;');
                 title.innerText = 'Tap to open.';
             } else {
+                const store = getStoredData();
+                if (store.count === 5) {
+                    count.innerText = 'Please wait to open more cards';
+                    return;
+                }
+                const newCount = (store.count || 0) + 1;
+                setStoredData({ count: newCount });
+                count.innerText = `Remaining ${5 - newCount}`;
+
                 if (!audio.paused) {
                     revealSfx.play();
                 }

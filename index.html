@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Opener</title>
-
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Modak&family=Raleway:wght@900&display=swap" rel="stylesheet">
-
+    
     <style>
         body, html { height: 100%; }
         body {
@@ -36,7 +36,7 @@
         .card {
             border-radius: 24px;
             box-shadow: 0 2px 12px 4px rgb(0 255 0 / 25%),
-                0 2px 2px 0px rgb(0 255 0 / 5%);
+            0 2px 2px 0px rgb(0 255 0 / 5%);
             height: 450px;
             width: 325px;
             transition: transform .125s;
@@ -81,7 +81,7 @@
             font-family: 'Modak', cursive;
             background: linear-gradient(#ffbaba, #b6b6f5);
         }
-
+        
         .container {
             margin: 0 auto;
             max-width: 335px;
@@ -144,12 +144,40 @@
             border-top-right-radius: 8px;
             border-top-left-radius: 8px;
         }
+        
+        .audio_player {
+            position: fixed;
+            bottom: 1rem;
+            left: 1rem;
+            right: 1rem;
+            background: tomato;
+            padding: .5rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 200px;
+            box-shadow: 0 2px 4px 2px teal;
+            max-width: 22rem;
+        }
+        .audio_player button {
+            background-color: transparent;
+            color: blue;
+            border: 2px solid teal;
+            border-radius: 200px;
+            padding: .25rem 1rem;
+            font-size: 1rem;
+            line-height: 1;
+            min-width: 60px;
+        }
+        .audio_player label {
+            margin-left: 1rem;
+        }
     </style>
 </head>
 <body>
-   <h1>Tap to open.</h1>
-   <div class="card_container">
-       <button class="card">
+    <h1>Tap to open.</h1>
+    <div class="card_container">
+        <button class="card">
             <p>Cool Card</p>
             <div class="card_back">
                 <div class="container">
@@ -163,16 +191,49 @@
                 </div>
                 <p id="char_name">Cool man</p>
             </div>
-       </button>
-   </div>
-
-   <script>
-       const {
-           scrollWidth: bodyWidth,
-       } = document.body;
-       const card = document.querySelector('.card');
-       window.addEventListener("deviceorientation", (event) => {
-           let flipOffset = 0;
+        </button>
+    </div>
+    <audio id="reveal_sound" src="reveal-adjusted.wav">
+        Your browser does not support the <code>audio</code> element.
+    </audio>
+    <audio id="loop_sound" loop src="loop-adjusted.wav">
+        Your browser does not support the <code>audio</code> element.
+    </audio>
+    <section class="audio_player">
+        <button id="audio_control" type="button">
+            ▶
+        </button>
+        <label>
+            <input id="audio_range" type="range" min="0" max="100" value="50" />
+            🔊
+        </label>
+    </section>
+    
+    <script>
+        const audioControl = document.getElementById('audio_control');
+        const audio = document.querySelector('#loop_sound');
+        audio.volume = .5;
+        audioControl.addEventListener('click', () => {
+            if (audio.paused) {
+                audioControl.innerText = '⏸';
+                audio.play();
+            } else {
+                audioControl.innerText = '▶';
+                audio.pause();
+            }
+        });
+        const audioRange = document.getElementById('audio_range');
+        audioRange.addEventListener('change', (event) => {
+            audio.volume = event.target.value * .01;
+        });
+        
+        const revealSfx = document.querySelector('#reveal_sound');
+        const {
+            scrollWidth: bodyWidth,
+        } = document.body;
+        const card = document.querySelector('.card');
+        window.addEventListener("deviceorientation", (event) => {
+            let flipOffset = 0;
             if (card.classList.contains('card--flipped')) {
                 flipOffset = 180;
             }
@@ -184,8 +245,8 @@
                 scaleX: (percentLeft * .05) + .45,
             };
             card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
-       }, true);
-       document.body.addEventListener('mousemove', (event) => {
+        }, true);
+        document.body.addEventListener('mousemove', (event) => {
             let flipOffset = 0;
             if (card.classList.contains('card--flipped')) {
                 flipOffset = 180;
@@ -199,9 +260,9 @@
                 scaleX: (percentLeft * .05) + .45,
             };
             card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
-       });
-       document.body.addEventListener('click', () => {
-           const title = document.querySelector('h1');
+        });
+        card.addEventListener('click', () => {
+            const title = document.querySelector('h1');
             card.setAttribute('style', '');
             if (card.classList.contains('card--flipped')) {
                 card.classList.remove('card--flipped');
@@ -209,11 +270,12 @@
                 cardBack.setAttribute('style', 'opacity: 0;');
                 title.innerText = 'Tap to open.';
             } else {
+                revealSfx.play();
                 title.innerText = 'Wow, Cool Card™!';
                 card.classList.add('card--flipped');
                 const cardBack = document.querySelector('.card_back');
                 cardBack.setAttribute('style', 'opacity: 1;');
-
+                
                 const skinR = Math.floor(Math.random() * 256);
                 const skinG = Math.floor(Math.random() * 256);
                 const skinB = Math.floor(Math.random() * 256);
@@ -236,18 +298,18 @@
                 });
                 const mouth = document.querySelector('.mouth');
                 mouth.setAttribute('style', `background: ${mouthRgb}`);
-
+                
                 const firstName = ['Cool', 'Uncool', 'Nasty', 'Nice', 'Mean', 'Sallow', 'Corn', 'Bico'];
                 const lastName = ['Man', 'Woman', 'Person', 'Alien', 'Bug', 'Dman', 'Bico'];
                 const label = document.getElementById('char_name');
                 const fnIndex = Math.ceil(Math.random() * firstName.length - 1);
                 const lnIndex = Math.ceil(Math.random() * lastName.length - 1);
                 label.innerText = `${firstName[fnIndex]} ${lastName[lnIndex]}`;
-
+                
                 const back = document.querySelector('.card_back');
                 back.setAttribute('style', `${back.getAttribute('style')} background: linear-gradient(rgba(${skinB}, ${skinR}, ${skinG}, 1), rgba(${shirtB}, ${shirtR}, ${shirtG}, 1)`);
             }
-       });
-   </script>
+        });
+    </script>
 </body>
 </html>

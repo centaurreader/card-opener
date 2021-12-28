@@ -222,12 +222,13 @@
                 audio.pause();
             }
         });
+        const revealSfx = document.querySelector('#reveal_sound');
         const audioRange = document.getElementById('audio_range');
         audioRange.addEventListener('change', (event) => {
             audio.volume = event.target.value * .01;
+            revealSfx.volume = event.target.value * .01;
         });
         
-        const revealSfx = document.querySelector('#reveal_sound');
         const {
             scrollWidth: bodyWidth,
         } = document.body;
@@ -270,7 +271,9 @@
                 cardBack.setAttribute('style', 'opacity: 0;');
                 title.innerText = 'Tap to open.';
             } else {
-                revealSfx.play();
+                if (!audio.paused) {
+                    revealSfx.play();
+                }
                 title.innerText = 'Wow, Cool Card™!';
                 card.classList.add('card--flipped');
                 const cardBack = document.querySelector('.card_back');

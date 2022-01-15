@@ -288,12 +288,7 @@
             }, true);
         }
 
-        function getPermission() {
-            if (typeof DeviceMotionEvent === 'undefined' && typeof DeviceMotionEvent.requestPermission !== 'function') {
-                listenForOrientation();
-            }
-        }
-        getPermission();
+        listenForOrientation();
 
         function requestPermission() {
             if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {

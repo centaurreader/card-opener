@@ -289,6 +289,13 @@
         }
 
         function getPermission() {
+            if (typeof DeviceMotionEvent === 'undefined') {
+                listenForOrientation();
+            }
+        }
+        getPermission();
+
+        function requestPermission() {
             if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
                 DeviceMotionEvent.requestPermission()
                     .then((response) => {
@@ -299,8 +306,6 @@
                     .catch((err) => {
                         console.log('denied');
                     });
-            } else {
-                listenForOrientation();
             }
         }
 
@@ -320,7 +325,7 @@
             card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
         });
         card.addEventListener('click', () => {
-            getPermission();
+            requestPermission();
             const title = document.querySelector('h1');
             card.setAttribute('style', '');
             if (card.classList.contains('card--flipped')) {

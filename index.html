@@ -42,7 +42,6 @@
             width: 275px;
             transition: transform .125s;
             transform-origin: 50% 50%;
-            transform: perspective(9cm) rotateY(30deg) translateX(15%);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -234,7 +233,8 @@
             }
         }
         const setStoredData = (data) => {
-            localStorage.setItem(storageKey, JSON.stringify(data));
+            const existingData = getStoredData();
+            localStorage.setItem(storageKey, JSON.stringify({ ...existingData, ...data }));
         }
         const initStore = () => {
             const data = getStoredData();
@@ -265,25 +265,45 @@
             audio.volume = event.target.value * .01;
             revealSfx.volume = event.target.value * .01;
         });
-        
+
         const {
             scrollWidth: bodyWidth,
         } = document.body;
         const card = document.querySelector('.card');
-        window.addEventListener("deviceorientation", (event) => {
-            let flipOffset = 0;
-            if (card.classList.contains('card--flipped')) {
-                flipOffset = 180;
+
+        function listenForOrientation() {
+            window.addEventListener("deviceorientation", (event) => {
+                let flipOffset = 0;
+                if (card.classList.contains('card--flipped')) {
+                    flipOffset = 180;
+                }
+                const percentLeft = event.gamma / 100;
+                const style = {
+                    perspective: 9,
+                    rotateY: (percentLeft * 100) + flipOffset,
+                    translateX: 15,
+                    scaleX: (percentLeft * .05) + .45,
+                };
+                card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
+            }, true);
+        }
+
+        function getPermission() {
+            if (typeof DeviceMotionEvent !== 'undefined' && typeof DeviceMotionEvent.requestPermission === 'function') {
+                DeviceMotionEvent.requestPermission()
+                    .then((response) => {
+                        if (response === 'granted') {
+                            listenForOrientation()
+                        }
+                    })
+                    .catch((err) => {
+                        console.log('denied');
+                    });
+            } else {
+                listenForOrientation();
             }
-            const percentLeft = event.gamma / 100;
-            const style = {
-                perspective: 9,
-                rotateY: (percentLeft * 100) + flipOffset,
-                translateX: 15,
-                scaleX: (percentLeft * .05) + .45,
-            };
-            card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
-        }, true);
+        }
+
         document.body.addEventListener('mousemove', (event) => {
             let flipOffset = 0;
             if (card.classList.contains('card--flipped')) {
@@ -300,6 +320,7 @@
             card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
         });
         card.addEventListener('click', () => {
+
             const title = document.querySelector('h1');
             card.setAttribute('style', '');
             if (card.classList.contains('card--flipped')) {

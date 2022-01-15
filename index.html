@@ -320,7 +320,7 @@
             card.setAttribute('style', `transform: perspective(${style.perspective}cm) rotateY(${style.rotateY}deg)`);
         });
         card.addEventListener('click', () => {
-
+            getPermission();
             const title = document.querySelector('h1');
             card.setAttribute('style', '');
             if (card.classList.contains('card--flipped')) {

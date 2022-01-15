@@ -289,7 +289,7 @@
         }
 
         function getPermission() {
-            if (typeof DeviceMotionEvent === 'undefined') {
+            if (typeof DeviceMotionEvent === 'undefined' && typeof DeviceMotionEvent.requestPermission !== 'function') {
                 listenForOrientation();
             }
         }

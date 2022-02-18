@@ -97,6 +97,9 @@
             width: 70px;
             border-radius: 400px;
         }
+        .head--bico {
+            border-radius: 24px;
+        }
         .eye {
             position: absolute;
             background: teal;
@@ -117,6 +120,12 @@
             border-radius: 4px;
         }
         .eye + .eye { right: 0 }
+        .eye--bug { left: -25%; }
+        .eye--bug + .eye--bug { transform: translateX(300%); }
+        .eye--alien {
+            left: 50%;
+            transform: translateX(-50%);
+        }
         .mouth {
             height: 4px;
             width: 35px;
@@ -125,6 +134,11 @@
             top: 65%;
             left: 50%;
             transform: translateX(-50%);
+        }
+        .mouth--dman {
+            border-radius: 200px;
+            height: 20px;
+            transform: skew(10deg, 10deg) translateX(-50%);
         }
         .neck {
             position: absolute;
@@ -143,6 +157,12 @@
             position: absolute;
             border-top-right-radius: 8px;
             border-top-left-radius: 8px;
+        }
+        #char_moj {
+            position: absolute;
+            bottom: -2rem;
+            right: 1rem;
+            transform: none;
         }
         
         .audio_player {
@@ -202,6 +222,7 @@
                     <div class="body"></div>
                 </div>
                 <p id="char_name">Cool man</p>
+                <p id="char_moj">🍦</p>
             </div>
         </button>
     </div>
@@ -337,10 +358,10 @@
                 title.innerText = 'Tap to open.';
             } else {
                 const store = getStoredData();
-                if (store.count === 5) {
-                    count.innerText = 'Please wait to open more cards';
-                    return;
-                }
+                // if (store.count === 5) {
+                //     count.innerText = 'Please wait to open more cards';
+                //     return;
+                // }
                 const newCount = (store.count || 0) + 1;
                 setStoredData({ count: newCount });
                 count.innerText = `Remaining ${5 - newCount}`;
@@ -352,6 +373,16 @@
                 card.classList.add('card--flipped');
                 const cardBack = document.querySelector('.card_back');
                 cardBack.setAttribute('style', 'opacity: 1;');
+
+                const firstName = ['Cool', 'Uncool', 'Nasty', 'Nice', 'Mean', 'Sallow', 'Corn', 'Bico'];
+                const lastName = ['Man', 'Woman', 'Person', 'Alien', 'Bug', 'Dman', 'Bico'];
+                const label = document.getElementById('char_name');
+                const fnIndex = Math.ceil(Math.random() * firstName.length - 1);
+                const lnIndex = Math.ceil(Math.random() * lastName.length - 1);
+                label.innerText = `${firstName[fnIndex]} ${lastName[lnIndex]}`;
+                const icons = ['🍦', '🌶', '🤢', '🌤', '🥲', '⛳️', '🌽', '🚮'];
+                const moj = document.querySelector('#char_moj');
+                moj.innerText = icons[fnIndex];
                 
                 const skinR = Math.floor(Math.random() * 256);
                 const skinG = Math.floor(Math.random() * 256);
@@ -364,24 +395,33 @@
                 const shirtB = Math.floor(Math.random() * 256);
                 const shirtRgb = `rgba(${shirtR}, ${shirtG}, ${shirtB}, 1)`;
                 const head = document.querySelector('.head');
+                head.classList.remove('head--bico');
+                if (lastName[lnIndex] === 'Bico' || firstName[fnIndex] === 'Bico') {
+                    head.classList.add('head--bico');
+                }
                 head.setAttribute('style', `background: ${skinRgb}`);
                 const neck = document.querySelector('.neck');
                 neck.setAttribute('style', `background: ${skinRgb}`);
                 const shirt = document.querySelector('.body');
                 shirt.setAttribute('style', `background: ${shirtRgb}`);
-                const eyes = document.querySelectorAll('.eyes');
+                const eyes = document.querySelectorAll('.eye');
                 eyes.forEach((eye) => {
+                    eye.classList.remove('eye--bug');
+                    eye.classList.remove('eye--alien');
                     eye.setAttribute('style', `background: ${eyeRgb}`);
+                    if (lastName[lnIndex] === 'Bug') {
+                        eye.classList.add('eye--bug');
+                    }
+                    if (lastName[lnIndex] === 'Alien') {
+                        eye.classList.add('eye--alien');
+                    }
                 });
                 const mouth = document.querySelector('.mouth');
                 mouth.setAttribute('style', `background: ${mouthRgb}`);
-                
-                const firstName = ['Cool', 'Uncool', 'Nasty', 'Nice', 'Mean', 'Sallow', 'Corn', 'Bico'];
-                const lastName = ['Man', 'Woman', 'Person', 'Alien', 'Bug', 'Dman', 'Bico'];
-                const label = document.getElementById('char_name');
-                const fnIndex = Math.ceil(Math.random() * firstName.length - 1);
-                const lnIndex = Math.ceil(Math.random() * lastName.length - 1);
-                label.innerText = `${firstName[fnIndex]} ${lastName[lnIndex]}`;
+                mouth.classList.remove('mouth--dman');
+                if (lastName[lnIndex] === 'Dman') {
+                    mouth.classList.add('mouth--dman');
+                }
                 
                 const back = document.querySelector('.card_back');
                 back.setAttribute('style', `${back.getAttribute('style')} background: linear-gradient(rgba(${skinB}, ${skinR}, ${skinG}, 1), rgba(${shirtB}, ${shirtR}, ${shirtG}, 1)`);

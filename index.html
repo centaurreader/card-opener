@@ -358,10 +358,10 @@
                 title.innerText = 'Tap to open.';
             } else {
                 const store = getStoredData();
-                // if (store.count === 5) {
-                //     count.innerText = 'Please wait to open more cards';
-                //     return;
-                // }
+                if (store.count === 5) {
+                    count.innerText = 'Please wait to open more cards';
+                    return;
+                }
                 const newCount = (store.count || 0) + 1;
                 setStoredData({ count: newCount });
                 count.innerText = `Remaining ${5 - newCount}`;

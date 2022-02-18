@@ -164,6 +164,15 @@
             right: 1rem;
             transform: none;
         }
+        #char_series {
+            position: absolute;
+            bottom: 1.25rem;
+            left: 1rem;
+            transform: none;
+            font-size: 12pt;
+            font-family: Raleway;
+            color: salmon;
+        }
         
         .audio_player {
             position: fixed;
@@ -223,6 +232,7 @@
                 </div>
                 <p id="char_name">Cool man</p>
                 <p id="char_moj">🍦</p>
+                <p id="char_series">1/1000</p>
             </div>
         </button>
     </div>
@@ -383,6 +393,9 @@
                 const icons = ['🍦', '🌶', '🤢', '🌤', '🥲', '⛳️', '🌽', '🚮'];
                 const moj = document.querySelector('#char_moj');
                 moj.innerText = icons[fnIndex];
+
+                const series = document.getElementById('char_series');
+                series.innerText = `${Math.ceil(Math.random() * 1000)}/1000`;
                 
                 const skinR = Math.floor(Math.random() * 256);
                 const skinG = Math.floor(Math.random() * 256);

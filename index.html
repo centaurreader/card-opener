@@ -209,7 +209,7 @@
     <audio id="reveal_sound" src="reveal-adjusted.mp3">
         Your browser does not support the <code>audio</code> element.
     </audio>
-    <audio id="loop_sound" loop src="loop-adjusted.mp3">
+    <audio id="loop_sound" loop src="loop-adjusted.ogg">
         Your browser does not support the <code>audio</code> element.
     </audio>
     <section class="audio_player">
@@ -257,6 +257,13 @@
             } else {
                 audioControl.innerText = '▶';
                 audio.pause();
+            }
+        });
+        audio.addEventListener('timeupdate', function(){
+            const buffer = .4;
+            if (this.currentTime > this.duration - buffer) {
+                this.currentTime = 0;
+                this.play();
             }
         });
         const revealSfx = document.querySelector('#reveal_sound');

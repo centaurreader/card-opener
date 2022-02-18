@@ -390,9 +390,17 @@
                 const fnIndex = Math.ceil(Math.random() * firstName.length - 1);
                 const lnIndex = Math.ceil(Math.random() * lastName.length - 1);
                 label.innerText = `${firstName[fnIndex]} ${lastName[lnIndex]}`;
-                const icons = ['🍦', '🌶', '🤢', '🌤', '🥲', '⛳️', '🌽', '🚮'];
+                const icons = [
+                    ['🍦', '🌶', '🤢', '🌤', '🥲', '⛳️', '🌽', '🚮'],
+                    ['🆒', '🥵', '😷', '💧', '☔️', '🔛', '🐿', '🏴‍☠️'],
+                    ['😎', '🍕', '💩', '🦅', '🤬', '🥗', '🦫', '☠️'],
+                    ['🍪', '🌭', '🎱', '🤝', '😤', '🥬', '🐀', '🎖'],
+                    ['🥶', '🦴', '🤮', '😇', '🍘', '🏁', '📈', '☄️'],
+                    ['🍧', '🍖', '🤕', '🥾', '🍼', '🌇', '📉', '🍹'],
+                    ['🦉', '👲', '🥿', '👢', '🐣', '🌚', '💸', '🎢'],
+                ];
                 const moj = document.querySelector('#char_moj');
-                moj.innerText = icons[fnIndex];
+                moj.innerText = icons[lnIndex][fnIndex];
 
                 const series = document.getElementById('char_series');
                 series.innerText = `${Math.ceil(Math.random() * 1000)}/1000`;
